@@ -26,7 +26,7 @@
     <nav class="wiki"><a href="" aria-current="page">Question</a> <a href="model/">Model</a></nav>
     <p class="src"><a href="https://github.com/jmfinnegan12/nvidia-ceo-departure-model">GitHub</a> · <a href="https://github.com/jmfinnegan12/nvidia-ceo-departure-model/issues/new">suggest a change</a> · <a href="https://github.com/jmfinnegan12/nvidia-ceo-departure-model/blob/main/CONTRIBUTING.md">how to contribute</a></p>
 
-    <p>I chose this as the second event because it sits at the opposite end of the spectrum from <a href="https://alien-discovery-model.eventneutral.com">the first</a> on a lot of dimensions. It is topical, in an active news cycle, with a lot of uncertainty. It is anchored in real events, as opposed to potentially unanswerable, deep human questions.</p>
+    <p>I chose this as the second event because it sits at the opposite end of the spectrum from <a href="https://alien-discovery-model.eventneutral.com">the first</a> on a lot of dimensions. It is topical, in an active news cycle, with a lot of uncertainty. It is anchored in real, fast moving events, as opposed to potentially unanswerable, deep human questions.</p>
 
     <h2>What happened</h2>
     <ul>
@@ -39,13 +39,6 @@
 
     <h2>The question</h2>
     <p>Will Huang have left his position as chief executive, and will that have been announced, before a set date? He has to have actually left: announcing a future departure does not count. Six dates are open, from Jan 1, 2027 to Jan 1, 2033.<sup class="fn"><a href="#s6">6</a></sup></p>
-
-    <h2>Forecast</h2>
-    <table class="num" id="forecast">
-      <thead><tr><th>Before</th><th>Chance he has left</th></tr></thead>
-      <tbody></tbody>
-    </table>
-    <p><a href="model/">How the forecast is built</a></p>
 
     <h2 id="sources">Sources</h2>
     <ol class="sources">
@@ -65,22 +58,6 @@
 <footer>
   <div class="wrap foot-inner">© 2026 Temerity Ventures LLC · <a href="mailto:info@eventneutral.com">Contact</a></div>
 </footer>
-
-<script src="model/model.js?v=1"></script>
-<script>
-// The table is computed from the same inputs as the Model page, so the two cannot drift apart.
-fetch('model/inputs.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (cfg) {
-  var M = window.ForecastModel.fromConfig(cfg);
-  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  var body = document.querySelector('#forecast tbody');
-  M.MARKET_DATES.forEach(function (t) {
-    var d = new Date(t);
-    var row = body.insertRow();
-    row.insertCell().textContent = months[d.getUTCMonth()] + ' ' + d.getUTCDate() + ', ' + d.getUTCFullYear();
-    row.insertCell().textContent = Math.round(M.total(t, M.DEFAULTS, 0).total * 100) + '%';
-  });
-});
-</script>
 
 </body>
 </html>

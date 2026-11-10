@@ -16,22 +16,20 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
     { key: 'time', cls: 's-time', name: 'Timing' },
     { key: 'ord', cls: 's-ord', name: 'Unrelated exits' },
   ];
-  // pct: shown as a percentage. key matches M.DEFAULTS. why() is the reasoning.
+  // pct: shown as a percentage. key matches M.DEFAULTS. note says what the slider measures, where the label alone
+  // is not enough; the reasoning behind each default is in "Why these numbers" on the page.
   const INPUTS = [
     { key: 'P_LIGHT', group: 'light', label: 'Something improper happened and comes to light', pct: true, step: 1,
-      why: () => 'My gut feeling is that an affair between a chief executive and an executive of one of his company\'s customers more likely than not leads to something improper coming to light. It has to be found and made public, not only to have happened, which is why this is not higher.' },
-    { key: 'P_OUT_IF_LIGHT', group: 'light', label: 'He leaves, if it does', pct: true, step: 1,
-      why: () => 'Keeping his job after that would be a long shot.' },
-    { key: 'P_OUT_IF_NOT', group: 'light', label: 'He leaves over this anyway, if nothing more comes to light', pct: true, step: 0.5, sliderMax: 40,
-      why: () => 'If the dealings were above board, he has a very high probability of staying.' },
-    { key: 'MEDIAN_DAYS', group: 'time', label: 'Days until half of those exits are set in motion', unit: 'days', step: 5, min: 5, max: 1500, sliderMax: 240,
-      why: () => 'It can come to light through the board\'s investigation, the press, Congress, a federal inquiry or the shareholder lawsuit. 85 days is a starting point taken from how long board investigations of a sitting chief executive have run. It feels long to me: the board would want to move rapidly, and the press will. Against that, there is no known successor, which is a reason to take time.' },
-    { key: 'LAG_DAYS', group: 'time', label: 'Days from there to him actually being out', unit: 'days', step: 1, max: 365, sliderMax: 90,
-      why: () => `The market counts only an actual departure. An announced future exit does not count.${fn('terms')} 14 days is a placeholder, not yet estimated.` },
-    { key: 'ORDINARY', group: 'ord', label: 'Chance per year he leaves for an unrelated reason', pct: true, step: 0.5, sliderMax: 15,
-      why: () => `Low single digits. He is a founder with more than three decades in the job who says he will stay "for as long as I deserve it".${fn('ces')} This covers mortality and the tail risk of extremely poor performance.` },
+      note: 'A conflict of interest, a preference given to the customer, information passed, or that he knew. Found and made public, not only true.' },
+    { key: 'P_OUT_IF_LIGHT', group: 'light', label: 'He leaves, if it does', pct: true, step: 1 },
+    { key: 'P_OUT_IF_NOT', group: 'light', label: 'He leaves over this anyway, if nothing more comes to light', pct: true, step: 0.5, sliderMax: 40 },
+    { key: 'MEDIAN_DAYS', group: 'time', label: 'Median days until the decisive finding or report', unit: 'days', step: 5, min: 5, max: 1500, sliderMax: 240,
+      note: 'Counted from Nov 9, 2026. The finding or report that ends his tenure is as likely to come before this many days as after. It can come from the board\'s investigation, the press, Congress, a federal inquiry or the shareholder lawsuit.' },
+    { key: 'LAG_DAYS', group: 'time', label: 'Days from then until he has actually left', unit: 'days', step: 1, max: 365, sliderMax: 90,
+      note: `The market counts only an actual departure. An announced future exit does not count.${fn('terms')}` },
+    { key: 'ORDINARY', group: 'ord', label: 'Chance per year he leaves for an unrelated reason', pct: true, step: 0.5, sliderMax: 15 },
   ];
-  const CASES = ['central', 'low case', 'high case']; // index order in M.DEFAULTS
+  const CASES = ['medium', 'low', 'high']; // index order in M.DEFAULTS
 
   const clone = (o) => JSON.parse(JSON.stringify(o));
   let params = clone(M.DEFAULTS);
@@ -56,32 +54,33 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
     el('h3', '', sec, group.name);
     hows[group.key] = el('p', 'how', sec);
     INPUTS.filter((inp) => inp.group === group.key).forEach((inp) => {
-      const row = el('div', 'field', sec);
+      const one = tied(inp);
+      const row = el('div', one ? 'field one' : 'field', sec);
       el('div', 'name', row, inp.label);
       const base = { min: inp.min || 0, max: inp.pct ? 100 : inp.max, step: inp.step, unit: inp.pct ? '%' : inp.unit };
-      const one = tied(inp);
       const set = (i) => (v) => {
         if (one) params[inp.key] = [0, 1, 2].map(() => stored(inp, v));
         else params[inp.key][i] = stored(inp, v);
         changed();
       };
-      const central = EN.sliderField({ ...base, value: shown(inp, params[inp.key][0]), sliderMin: inp.sliderMin, sliderMax: inp.sliderMax, label: `${inp.label}, central`, onChange: set(0) });
+      const central = EN.sliderField({ ...base, value: shown(inp, params[inp.key][0]), sliderMin: inp.sliderMin, sliderMax: inp.sliderMax, label: `${inp.label}, medium`, onChange: set(0) });
       row.appendChild(central.range);
       central.box.el.classList.add('central');
-      row.appendChild(central.box.el);
+      // the number boxes sit in the order low, medium, high
       const cases = el('div', 'cases', row);
       const boxes = [central.box];
-      if (!one) {
-        [1, 2].forEach((i) => {
-          const b = EN.numberBox({ ...base, value: shown(inp, params[inp.key][i]), label: `${inp.label}, ${CASES[i]}`, onChange: set(i) });
-          const lab = el('span', 'case-label', null, i === 1 ? 'Low case' : 'High case');
-          b.el.insertBefore(lab, b.el.firstChild);
-          cases.appendChild(b.el);
-          boxes[i] = b;
-        });
-      }
-      const why = el('p', 'why', row);
-      why.innerHTML = inp.why();
+      const tag = (b, text) => b.el.insertBefore(el('span', 'case-label', null, text), b.el.firstChild);
+      const side = (i, text) => {
+        const b = EN.numberBox({ ...base, value: shown(inp, params[inp.key][i]), label: `${inp.label}, ${CASES[i]}`, onChange: set(i) });
+        tag(b, text);
+        cases.appendChild(b.el);
+        boxes[i] = b;
+      };
+      if (!one) side(1, 'Low');
+      tag(central.box, 'Medium');
+      cases.appendChild(central.box.el);
+      if (!one) side(2, 'High');
+      if (inp.note) el('p', 'note', row).innerHTML = inp.note;
       fields[inp.key] = { inp, central, boxes };
     });
   });
@@ -106,51 +105,44 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
   resetBtn.addEventListener('click', () => { params = clone(M.DEFAULTS); changed(); });
   document.querySelectorAll('input[name="horizon"]').forEach((r) => r.addEventListener('change', changed));
 
-  // ---------- the critical question, drawn as a split ----------
-  // Widths are probabilities. The top row splits on whether something improper comes to light;
-  // the bottom row is where each part ends up. Unrelated exits are not in this picture.
-  flow = EN.chart.frame(document.getElementById('flow'), () => 226, ({ svg, width }) => {
+  // ---------- the critical question, drawn as a tree ----------
+  // Two branches, each ending in "he leaves" or "he stays". Every bar is on the same 0 to 100% scale,
+  // so a bar's length is that outcome's share of all cases. Unrelated exits are not in this picture.
+  flow = EN.chart.frame(document.getElementById('flow'), () => 338, ({ svg, width }) => {
     svg.selectAll('*').remove();
-    svg.attr('aria-label', 'How the chance that something improper comes to light splits into leaving and staying');
     const pl = params.P_LIGHT[0], py = params.P_OUT_IF_LIGHT[0], pn = params.P_OUT_IF_NOT[0];
-    const gap = 10, W = width - gap, bar = 14, yA = 50, yB = 150;
-    const lo = pl * py * W, ls = pl * (1 - py) * W, qo = (1 - pl) * pn * W, qs = (1 - pl) * (1 - pn) * W;
-    const out = lo + qo;
-    const ribbon = (a0, a1, b0, b1) => {
-      const y0 = yA + bar, y1 = yB, ym = (y0 + y1) / 2;
-      return `M${a0},${y0}C${a0},${ym} ${b0},${ym} ${b0},${y1}L${b1},${y1}C${b1},${ym} ${a1},${ym} ${a1},${y0}Z`;
-    };
-    const notX = pl * W + gap, stayX = out + gap;
+    const faint = 'var(--ink-faint)';
+    const rows = [
+      { lvl: 0, name: 'Something improper comes to light', parts: [[pl, 'var(--s1)']] },
+      { lvl: 1, name: `He leaves, ${n1(py)} of the time`, parts: [[pl * py, 'var(--s1)']] },
+      { lvl: 1, name: `He stays, ${n1(1 - py)} of the time`, parts: [[pl * (1 - py), faint]], last: true },
+      { lvl: 0, name: 'Nothing more comes to light', parts: [[1 - pl, faint]], gap: 10 },
+      { lvl: 1, name: `He leaves anyway, ${n1(pn)} of the time`, parts: [[(1 - pl) * pn, 'var(--s2)']] },
+      { lvl: 1, name: `He stays, ${n1(1 - pn)} of the time`, parts: [[(1 - pl) * (1 - pn), faint]], last: true },
+      { lvl: 0, name: 'He leaves over this, either way', parts: [[pl * py, 'var(--s1)'], [(1 - pl) * pn, 'var(--s2)']], gap: 22, rule: true },
+    ];
+    svg.attr('aria-label', rows.map((r) => `${r.name}: ${n1(d3.sum(r.parts, (q) => q[0]))}`).join('. '));
+    const indent = 22, step = 42, scale = width - indent;
     const g = svg.append('g');
-    // ribbons: to "stays" first so the "leaves" ribbons sit on top where they cross
-    g.append('path').attr('d', ribbon(lo, lo + ls, stayX, stayX + ls)).attr('fill', 'var(--band)');
-    g.append('path').attr('d', ribbon(notX + qo, notX + qo + qs, stayX + ls, stayX + ls + qs)).attr('fill', 'var(--band)');
-    g.append('path').attr('d', ribbon(0, lo, 0, lo)).attr('fill', 'var(--s1)').attr('fill-opacity', 0.32);
-    g.append('path').attr('d', ribbon(notX, notX + qo, lo, lo + qo)).attr('fill', 'var(--s2)').attr('fill-opacity', 0.55);
-    // top row
-    g.append('rect').attr('x', 0).attr('y', yA).attr('width', Math.max(pl * W, 0)).attr('height', bar).attr('fill', 'var(--s1)');
-    g.append('rect').attr('x', notX).attr('y', yA).attr('width', Math.max((1 - pl) * W, 0)).attr('height', bar).attr('fill', 'var(--ink-faint)');
-    // bottom row
-    g.append('rect').attr('x', 0).attr('y', yB).attr('width', lo).attr('height', bar).attr('fill', 'var(--s1)');
-    g.append('rect').attr('x', lo).attr('y', yB).attr('width', qo).attr('height', bar).attr('fill', 'var(--s2)');
-    g.append('rect').attr('x', stayX).attr('y', yB).attr('width', Math.max(ls + qs, 0)).attr('height', bar).attr('fill', 'var(--ink-faint)').attr('fill-opacity', 0.55);
-    // labels: anchored to the outer edges so they cannot collide
-    const label = (x, anchor, y, big, small) => {
-      g.append('text').attr('class', 'big').attr('x', x).attr('y', y).attr('text-anchor', anchor).text(big);
-      g.append('text').attr('class', 'note').attr('x', x).attr('y', y + 19).attr('text-anchor', anchor).text(small);
-    };
-    const narrow = width < 430;
-    label(0, 'start', 16, n1(pl), narrow ? 'Something comes to light' : 'Something improper comes to light');
-    label(width, 'end', 16, n1(1 - pl), 'Nothing more does');
-    label(0, 'start', yB + bar + 22, n1(pl * py + (1 - pl) * pn), 'He leaves over this');
-    label(width, 'end', yB + bar + 22, n1(1 - pl * py - (1 - pl) * pn), 'He stays');
-    // the two large ribbons carry their own share
-    const mid = (yA + bar + yB) / 2 + 5;
-    if (lo > 76) g.append('text').attr('class', 'on').attr('x', lo / 2).attr('y', mid).attr('text-anchor', 'middle').text(`${n1(py)} leave`);
-    if (qs > 76) g.append('text').attr('class', 'on').attr('x', (notX + qo + qs / 2 + stayX + ls + qs / 2) / 2).attr('y', mid).attr('text-anchor', 'middle').text(`${n1(1 - pn)} stay`);
-
-    document.getElementById('flow-say').innerHTML =
-      `<b>${n1(pl * py + (1 - pl) * pn)}</b> that he leaves over this at some point: ${n1(pl * py)} after something comes to light, ${n1((1 - pl) * pn)} without it. When is the next question.`;
+    let y = 0, parentY = 0;
+    rows.forEach((r) => {
+      y += r.gap || 0;
+      const x0 = r.lvl ? indent : 0;
+      if (r.rule) g.append('line').attr('x1', 0).attr('x2', width).attr('y1', y - 10).attr('y2', y - 10).attr('stroke', 'var(--line)');
+      if (r.lvl) {
+        // the elbow from the branch above to this outcome
+        g.append('path').attr('d', `M7,${parentY}V${y + 27}H${indent - 5}`).attr('fill', 'none').attr('stroke', 'var(--line)').attr('stroke-width', 1.5);
+      } else parentY = y + 34;
+      g.append('text').attr('class', r.lvl ? 'leaf' : 'branch').attr('x', x0).attr('y', y + 15).text(r.name);
+      g.append('text').attr('class', r.lvl ? 'leaf-val' : 'val').attr('x', width).attr('y', y + 15).attr('text-anchor', 'end').text(n1(d3.sum(r.parts, (q) => q[0])));
+      let x = x0;
+      r.parts.forEach(([v, tone]) => {
+        g.append('rect').attr('x', x).attr('y', y + 23).attr('width', Math.max(v * scale, 0)).attr('height', r.lvl ? 7 : 9).attr('rx', 1.5)
+          .attr('fill', tone).attr('fill-opacity', tone === faint ? 0.6 : 1);
+        x += v * scale;
+      });
+      y += step;
+    });
   });
 
   // ---------- chart ----------
@@ -158,7 +150,7 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
   // (The exact total is a little less than the plain sum, so each layer is scaled by total / sum.)
   const LAYERS = [
     { key: 'light', name: 'Something came to light', tone: 'var(--s1)' },
-    { key: 'quiet', name: 'Nothing more did', tone: 'var(--s2)' },
+    { key: 'quiet', name: 'Nothing more came to light', tone: 'var(--s2)' },
     { key: 'ord', name: 'Unrelated', tone: 'var(--s3)' },
   ];
   const stack = (r) => {
@@ -176,7 +168,7 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
 
   EN.chart.frame(box, (w) => Math.max(260, Math.min(430, w * 0.56)), ({ svg, width, height }) => {
     const wide = width > 640;
-    const m = { t: 30, r: wide ? 172 : 10, b: 30, l: 46 };
+    const m = { t: 30, r: wide ? 200 : 10, b: 30, l: 46 };
     svg.selectAll('*').remove();
     svg.attr('aria-label', 'Chance he has left before each date, in total and by cause');
     G = { width, height, m, wide };
@@ -288,7 +280,7 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
     document.getElementById('say').innerHTML = r.t === M.TODAY
       ? `The forecast starts on <b>${fmtDate(new Date(r.t))}</b>. Pick a later date.`
       : `Before <b>${fmtDate(new Date(r.t))}</b>, the chance he has left is <b>${pct(r.total)}</b>, with a range of ${pct(r.low)} to ${pct(r.high)}. ` +
-        `That is ${part('s-light', 'something came to light', 'light')} + ${part('s-quiet', 'nothing more did', 'quiet')} + ${part('s-ord', 'unrelated', 'ord')}. ` +
+        `That is ${part('s-light', 'something came to light', 'light')} + ${part('s-quiet', 'nothing more came to light', 'quiet')} + ${part('s-ord', 'unrelated', 'ord')}. ` +
         `If he is still chief executive on that date, the chance he leaves in the following 12 months is <b>${pct(M.after(r.t, 365, params, 0))}</b>.`;
   }
 
@@ -298,7 +290,7 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
     const days = M.days(M.TODAY, r.t);
     const ever = p.P_LIGHT[0] * p.P_OUT_IF_LIGHT[0] + (1 - p.P_LIGHT[0]) * p.P_OUT_IF_NOT[0];
     hows.light.textContent = `${n1(p.P_LIGHT[0])} × ${n1(p.P_OUT_IF_LIGHT[0])} + ${n1(1 - p.P_LIGHT[0])} × ${n1(p.P_OUT_IF_NOT[0])} = ${n1(ever)} that he leaves over this at some point`;
-    hows.time.textContent = `Before ${date}, ${days} days in: ${n1(r.played)} of those exits have happened. ${n1(ever)} × ${n1(r.played)} = ${n1(r.light + r.quiet)}`;
+    hows.time.textContent = `Before ${date}, ${days} days in: ${n1(r.played)} of the exits over this have happened. ${n1(ever)} × ${n1(r.played)} = ${n1(r.light + r.quiet)}`;
     hows.ord.textContent = `Before ${date}: ${n1(p.ORDINARY[0])} a year over ${(days / 365.25).toFixed(1)} years = ${n1(r.ord)}`;
   }
 
