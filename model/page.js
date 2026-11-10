@@ -19,15 +19,15 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
   // pct: shown as a percentage. key matches M.DEFAULTS. note says what the slider measures, where the label alone
   // is not enough; the reasoning behind each default is in "Why these numbers" on the page.
   const INPUTS = [
-    { key: 'P_LIGHT', group: 'light', label: 'Something improper happened and comes to light', pct: true, step: 1,
+    { key: 'P_LIGHT', group: 'light', label: 'Chance that something improper happened and comes to light', pct: true, step: 1,
       note: 'A conflict of interest, a preference given to the customer, information passed, or that he knew. Found and made public, not only true.' },
-    { key: 'P_OUT_IF_LIGHT', group: 'light', label: 'He leaves, if it does', pct: true, step: 1 },
-    { key: 'P_OUT_IF_NOT', group: 'light', label: 'He leaves over this anyway, if nothing more comes to light', pct: true, step: 0.5, sliderMax: 40 },
+    { key: 'P_OUT_IF_LIGHT', group: 'light', label: 'Chance he leaves, if something improper comes to light', pct: true, step: 1 },
+    { key: 'P_OUT_IF_NOT', group: 'light', label: 'Chance he leaves over the scandal, if nothing more comes to light', pct: true, step: 0.5, sliderMax: 40 },
     { key: 'MEDIAN_DAYS', group: 'time', label: 'Median days until the decisive finding or report', unit: 'days', step: 5, min: 5, max: 1500, sliderMax: 240,
       note: 'Counted from Nov 9, 2026. The finding or report that ends his tenure is as likely to come before this many days as after. It can come from the board\'s investigation, the press, Congress, a federal inquiry or the shareholder lawsuit.' },
-    { key: 'LAG_DAYS', group: 'time', label: 'Days from then until he has actually left', unit: 'days', step: 1, max: 365, sliderMax: 90,
+    { key: 'LAG_DAYS', group: 'time', label: 'Days from the decisive finding or report until he has actually left', unit: 'days', step: 1, max: 365, sliderMax: 90,
       note: `The market counts only an actual departure. An announced future exit does not count.${fn('terms')}` },
-    { key: 'ORDINARY', group: 'ord', label: 'Chance per year he leaves for an unrelated reason', pct: true, step: 0.5, sliderMax: 15 },
+    { key: 'ORDINARY', group: 'ord', label: 'Chance per year he leaves for a reason unrelated to the scandal', pct: true, step: 0.5, sliderMax: 15 },
   ];
   const CASES = ['medium', 'low', 'high']; // index order in M.DEFAULTS
 
@@ -119,7 +119,7 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
       { lvl: 0, name: 'Nothing more comes to light', parts: [[1 - pl, faint]], gap: 10 },
       { lvl: 1, name: `He leaves anyway, ${n1(pn)} of the time`, parts: [[(1 - pl) * pn, 'var(--s2)']] },
       { lvl: 1, name: `He stays, ${n1(1 - pn)} of the time`, parts: [[(1 - pl) * (1 - pn), faint]], last: true },
-      { lvl: 0, name: 'He leaves over this, either way', parts: [[pl * py, 'var(--s1)'], [(1 - pl) * pn, 'var(--s2)']], gap: 22, rule: true },
+      { lvl: 0, name: 'He leaves over the scandal, either way', parts: [[pl * py, 'var(--s1)'], [(1 - pl) * pn, 'var(--s2)']], gap: 22, rule: true },
     ];
     svg.attr('aria-label', rows.map((r) => `${r.name}: ${n1(d3.sum(r.parts, (q) => q[0]))}`).join('. '));
     const indent = 22, step = 42, scale = width - indent;
@@ -289,8 +289,8 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
     const p = params, date = fmtDate(new Date(r.t));
     const days = M.days(M.TODAY, r.t);
     const ever = p.P_LIGHT[0] * p.P_OUT_IF_LIGHT[0] + (1 - p.P_LIGHT[0]) * p.P_OUT_IF_NOT[0];
-    hows.light.textContent = `${n1(p.P_LIGHT[0])} × ${n1(p.P_OUT_IF_LIGHT[0])} + ${n1(1 - p.P_LIGHT[0])} × ${n1(p.P_OUT_IF_NOT[0])} = ${n1(ever)} that he leaves over this at some point`;
-    hows.time.textContent = `Before ${date}, ${days} days in: ${n1(r.played)} of the exits over this have happened. ${n1(ever)} × ${n1(r.played)} = ${n1(r.light + r.quiet)}`;
+    hows.light.textContent = `${n1(p.P_LIGHT[0])} × ${n1(p.P_OUT_IF_LIGHT[0])} + ${n1(1 - p.P_LIGHT[0])} × ${n1(p.P_OUT_IF_NOT[0])} = ${n1(ever)} that he leaves over the scandal at some point`;
+    hows.time.textContent = `Before ${date}, ${days} days in: ${n1(r.played)} of the exits over the scandal have happened. ${n1(ever)} × ${n1(r.played)} = ${n1(r.light + r.quiet)}`;
     hows.ord.textContent = `Before ${date}: ${n1(p.ORDINARY[0])} a year over ${(days / 365.25).toFixed(1)} years = ${n1(r.ord)}`;
   }
 
