@@ -15,6 +15,7 @@
 - Jim's rationale for a model's default values goes in its own section. Text beside a control only says what the control is.
 - A chart must be readable without an explanation.
 - Each event site has a rules page for its market.
+- Each model page has an "Update log" dropdown beside its rationale, assumptions and weak points: one dated line per change to the model, newest first, saying what changed and why, sourced.
 - Structure and choice of visuals are open. They follow the question.
 - Before showing the page: open it in a browser, compare it with the references and earlier finished pages, and fix what falls short.
 
