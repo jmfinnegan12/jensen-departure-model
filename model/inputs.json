@@ -1,0 +1,13 @@
+{
+  "_about": "The forecast's inputs. Both the Model page (model/model.js) and code/forecast_curve.py read this file; edit here only. Probabilities are 0-1. low_case/high_case mean a lower/higher chance that he has left.",
+  "as_of": "2026-11-09",
+  "market_dates": ["2027-01-01", "2027-07-01", "2028-01-01", "2029-01-01", "2031-01-01", "2033-01-01"],
+  "inputs": {
+    "P_LIGHT":        {"central": 0.60,  "low_case": 0.55, "high_case": 0.65, "note": "something improper beyond the affair happened and comes to light"},
+    "P_OUT_IF_LIGHT": {"central": 0.95,  "low_case": 0.95, "high_case": 0.95, "note": "he leaves, given it comes to light"},
+    "P_OUT_IF_NOT":   {"central": 0.075, "low_case": 0.05, "high_case": 0.10, "note": "he leaves over this anyway, given nothing more comes to light"},
+    "MEDIAN_DAYS":    {"central": 85,    "low_case": 85,   "high_case": 85,   "note": "days from as_of by which half of the scandal's exits have been set in motion"},
+    "LAG_DAYS":       {"central": 14,    "low_case": 14,   "high_case": 14,   "note": "days from that point to him actually being out; placeholder, not yet estimated"},
+    "ORDINARY":       {"central": 0.025, "low_case": 0.02, "high_case": 0.03, "note": "chance per year he leaves for any reason unrelated to the scandal"}
+  }
+}

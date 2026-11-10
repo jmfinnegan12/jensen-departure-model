@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model · Will Jensen Huang leave as Nvidia CEO? · Event Neutral</title>
+<link rel="stylesheet" href="https://eventneutral.com/kit/v1/kit.css?v=3">
+<script src="https://eventneutral.com/kit/v1/theme.js"></script>
+<style>
+  /* This page only. The shared look is loaded from eventneutral.com/kit/v1. */
+  .s-light { --tone: var(--s1); } .s-quiet { --tone: var(--s2); } .s-ord { --tone: var(--s3); } .s-time { --tone: var(--ink-soft); }
+
+  /* the critical question, drawn as a split */
+  #flow { max-width: 620px; margin: 18px 0 6px; }
+  #flow .big { font-size: 19px; font-weight: 650; fill: var(--ink); }
+  #flow .on { font-size: 14px; font-weight: 600; fill: var(--ink); }
+  .flow-say { font-size: 16.5px; color: var(--ink-soft); max-width: 620px; margin: 6px 0 0; font-variant-numeric: tabular-nums; }
+  .flow-say b { color: var(--ink); font-weight: 650; }
+
+  .view { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 14px 0 4px; font-size: 15.5px; color: var(--ink-soft); }
+  .key { display: none; flex-wrap: wrap; gap: 4px 16px; font-size: 14.5px; color: var(--ink-soft); margin: 10px 0 0; }
+  .key i { display: inline-block; width: 16px; border-top: 2px solid var(--tone, var(--ink)); vertical-align: middle; margin-right: 6px; }
+  .key i.band { height: 10px; border: 0; background: var(--band); }
+
+  #chart .plot-hit { cursor: ew-resize; touch-action: pan-y; }
+  #chart .plot-hit:focus-visible { outline: none; }
+  #chart .plot-hit:focus-visible ~ .cursor .grip { stroke: var(--accent); stroke-width: 3; }
+
+  .say { font-size: 21px; line-height: 1.45; margin: 14px 0 6px; max-width: 34em; }
+  .say b { font-weight: 650; font-variant-numeric: tabular-nums; }
+  .say .tone { color: var(--tone); font-weight: 600; }
+  .hint { margin: 0; }
+
+  .inputs-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 48px 0 6px; }
+  .inputs-head h2 { margin: 0; }
+  .group { border-top: 1px solid var(--line); padding: 18px 0 6px; }
+  .group h3 { color: var(--tone); }
+  .group .how { font-size: 15.5px; color: var(--ink-soft); margin: 0 0 10px; font-variant-numeric: tabular-nums; }
+  .cols, .field { display: grid; grid-template-columns: minmax(0, 1fr) minmax(140px, 240px) 104px 104px 104px; column-gap: 20px; align-items: center; }
+  .cols { font-size: 14.5px; color: var(--ink-faint); padding-bottom: 6px; }
+  .cols span:first-child { grid-column: 4; }
+  .field { padding: 10px 0 12px; }
+  .field .name { line-height: 1.3; font-weight: 600; }
+  .field .why { grid-column: 1 / -1; font-size: 15.5px; color: var(--ink-soft); margin: 4px 0 0; max-width: 68ch; }
+  .field .case-label { display: none; }
+  .field .en-num input { width: 68px; }
+  .end { margin-top: 48px; }
+  .end ul { margin-left: 20px; }
+
+  @media (max-width: 760px) {
+    .key { display: flex; }
+    .say { font-size: 19px; }
+    .cols { display: none; }
+    .field { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name name" "slider central" "cases cases" "why why"; row-gap: 6px; column-gap: 14px; padding: 12px 0; }
+    .field .name { grid-area: name; }
+    .field .en-range { grid-area: slider; }
+    .field .central { grid-area: central; }
+    .field .cases { grid-area: cases; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14.5px; color: var(--ink-faint); }
+    .field .cases:empty { display: none; }
+    .field .why { grid-area: why; margin: 0; }
+    .field .case-label { display: inline; margin-right: 6px; }
+    .field .cases .en-num input { width: 62px; font-size: 15.5px; padding: 3px 6px; }
+  }
+  @media (min-width: 761px) { .field .cases { display: contents; } }
+  @media (max-width: 560px) { #flow .big { font-size: 17px; } }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap wide bar-inner">
+    <a class="brand" href="https://eventneutral.com/">Event&nbsp;Neutral</a>
+    <nav class="nav">
+      <a href="https://eventneutral.com/">Home</a>
+      <a href="https://eventneutral.com/about/">About</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap wide">
+    <div class="kicker">Started 2026-11-09</div>
+    <h1>Will Jensen Huang leave as Nvidia CEO?</h1>
+    <nav class="wiki"><a href="../">Question</a> <a href="./" aria-current="page">Model</a></nav>
+    <p class="src"><a href="https://github.com/jmfinnegan12/nvidia-ceo-departure-model">GitHub</a> · <a href="https://github.com/jmfinnegan12/nvidia-ceo-departure-model/issues/new">suggest a change</a> · <a href="https://github.com/jmfinnegan12/nvidia-ceo-departure-model/blob/main/CONTRIBUTING.md">how to contribute</a></p>
+
+    <h2>Base case</h2>
+    <p class="measure">Before this month, the chance of Huang leaving in a given year was low single digits. He founded Nvidia, has run it for more than three decades, and said in January he will stay "for as long as I deserve it".<sup class="fn"><a href="#s5">5</a></sup> The model adjusts from there.</p>
+
+    <h2>Two things, not one</h2>
+    <p class="measure">On Nov 8, 2026 Huang told Nvidia staff he had been unfaithful to his wife.<sup class="fn"><a href="#s2">2</a></sup> The woman is reported to be an executive of Megaspeed, an Nvidia customer, whom U.S. intelligence officials reportedly consider an asset of China's Ministry of State Security.<sup class="fn"><a href="#s3">3</a></sup> Nvidia's board opened an independent investigation.<sup class="fn"><a href="#s1">1</a></sup></p>
+    <p class="measure">The news reports this as one thing. I think it is two: he had an affair, and he is tied to an alleged Chinese spy who is also an executive of a customer. The affair, admitted at once, is unlikely to cost him the job on its own. The tie could.</p>
+
+    <h2>The critical question</h2>
+    <p class="measure">If the dealings were above board, he has a very high probability of staying. If there was a conflict of interest, a preference given, or information passed, keeping his job would be a long shot. So the critical question is the chance that something improper happened and comes to light. If nothing is found, nothing comes to light.</p>
+    <div class="en-chart" id="flow"></div>
+    <p class="flow-say" id="flow-say" aria-live="polite"></p>
+
+    <h2>The forecast</h2>
+    <p class="measure">Exits of this kind come fast or not at all. Most of the risk falls in the first months. If he is still CEO after that, the chance falls back toward the base case.</p>
+    <div class="view">
+      <span id="view-label">Chart runs to</span>
+      <span class="en-seg" role="radiogroup" aria-labelledby="view-label">
+        <label><input type="radio" name="horizon" value="2028-03-01" checked>2028</label>
+        <label><input type="radio" name="horizon" value="2030-01-01">2030</label>
+        <label><input type="radio" name="horizon" value="2033-03-01">2033</label>
+      </span>
+    </div>
+
+    <div class="key" aria-hidden="true">
+      <span><i></i>Chance he has left</span>
+      <span><i class="band"></i>Range</span>
+      <span class="s-light"><i></i>Something came to light</span>
+      <span class="s-quiet"><i></i>+ nothing more did</span>
+    </div>
+    <div class="en-chart" id="chart"></div>
+    <p class="muted hint">Drag across the chart to pick a date. The open circles are the market's dates.</p>
+
+    <p class="say" id="say" aria-live="polite"></p>
+
+    <div class="inputs-head">
+      <h2>Inputs</h2>
+      <button class="en-btn" id="reset" type="button">Reset</button>
+    </div>
+    <p class="measure">Each input is my estimate. Change one and everything above updates.</p>
+    <div class="cols" aria-hidden="true"><span>Low case</span><span>High case</span></div>
+    <div id="inputs"></div>
+    <p class="muted measure">Where an input has a low and a high case, they set the shaded range on the chart. Low means a lower chance that he has left.</p>
+
+    <div class="end">
+      <details class="en-q">
+        <summary>Assumptions</summary>
+        <ul>
+          <li>An exit caused by the scandal follows the same clock whether or not something improper comes to light.</li>
+          <li>Half of those exits are set in motion by the median, three quarters by twice the median, and so on.</li>
+          <li>Unrelated exits happen at a constant yearly rate, independent of the scandal.</li>
+        </ul>
+      </details>
+      <details class="en-q">
+        <summary>Weak points</summary>
+        <ul>
+          <li><strong>The critical question is a gut estimate.</strong> No count of past cases supports it yet.</li>
+          <li><strong>There is almost no precedent.</strong> A chief executive tied to an alleged agent of an adversary state has few earlier cases to compare with.</li>
+          <li><strong>The board has already said</strong> it "has no reason to believe that either national security or NVIDIA secrets were compromised".<sup class="fn"><a href="#s1">1</a></sup></li>
+          <li><strong>The President's backing.</strong> He has said Huang should stay.<sup class="fn"><a href="#s3">3</a></sup> If the tide turns against Huang, I expect him to go with the tide.</li>
+          <li><strong>Only an actual departure counts.</strong> An announced future exit does not, and the contract terms do not address a leave of absence or an interim chief executive.<sup class="fn"><a href="#s4">4</a></sup></li>
+        </ul>
+      </details>
+      <details class="en-q">
+        <summary>What would change the forecast</summary>
+        <ul>
+          <li>The board committee naming its members, its counsel or a timeline, or reporting a finding.</li>
+          <li>Nvidia starting to put a succession plan in place.</li>
+          <li>Huang's answer to the House chairs' request for a closed briefing on Nov 18.<sup class="fn"><a href="#s6">6</a></sup></li>
+          <li>Public hearings, a subpoena, a review of Nvidia's export licences, or charges in the Megaspeed case.</li>
+          <li>New reporting on what he knew, or on what passed.</li>
+        </ul>
+      </details>
+      <details class="en-q">
+        <summary>Open questions</summary>
+        <ul>
+          <li>How long did the relationship last, and what access did it give her?</li>
+          <li>Did the board know of it before Nov 8?</li>
+          <li>Did Megaspeed receive anything other customers did not?</li>
+          <li>What is the FBI examining?</li>
+          <li>How long from something coming to light to him actually being out? The 14 days in the model is a placeholder.</li>
+          <li>Would a leave of absence count as leaving?</li>
+        </ul>
+      </details>
+      <details class="en-q">
+        <summary>Something missing? Suggest an improvement</summary>
+        <p class="measure"><a href="https://github.com/jmfinnegan12/nvidia-ceo-departure-model/issues/new">Suggest a change</a> on GitHub, or copy the <a href="https://github.com/jmfinnegan12/nvidia-ceo-departure-model">repository</a> and send your version (<a href="https://github.com/jmfinnegan12/nvidia-ceo-departure-model/blob/main/CONTRIBUTING.md">how to contribute</a>). The same calculation as a short script: <a href="https://github.com/jmfinnegan12/nvidia-ceo-departure-model/blob/main/code/forecast_curve.py">forecast_curve.py</a>.</p>
+      </details>
+    </div>
+
+    <h2 id="sources">Sources</h2>
+    <ol class="sources">
+      <li id="s1"><a href="https://investor.nvidia.com/news/press-release-details/2026/Statement-from-NVIDIA-Board-of-Directors/default.aspx">NVIDIA. "Statement from NVIDIA Board of Directors." 2026-11-08.</a></li>
+      <li id="s2"><a href="https://www.cnbc.com/2026/11/08/nvidia-jensen-huang-email-board-of-directors-statement.html">CNBC. "Read Huang's email to his staff and statement from Nvidia's board of directors." 2026-11-08.</a></li>
+      <li id="s3"><a href="https://www.nbcnews.com/tech/tech-news/nvidia-ceo-jensen-huang-investigation-rcna608148">NBC News. "Nvidia opens investigation after CEO Jensen Huang's affair with alleged Chinese spy." 2026-11-09.</a></li>
+      <li id="s4"><a href="https://assets.kalshi.com/contract_terms/CEOCHANGE.pdf">Kalshi. CEOCHANGE contract terms.</a></li>
+      <li id="s5"><a href="https://qz.com/nvidia-jensen-huang-retirement-ces">Quartz. Report of Huang's remarks at CES. 2026-01-07.</a></li>
+      <li id="s6"><a href="https://chinaselectcommittee.house.gov/media/press-releases/moolenaar-mast-and-crawford-seek-briefing-from-jensen-huang-on-ties-to-chinese-intelligence-asset">House Select Committee on the CCP. "Moolenaar, Mast and Crawford seek briefing from Jensen Huang." 2026-11-05.</a></li>
+    </ol>
+
+    <p class="muted" style="margin-top:28px">Last updated 2026-11-09 · <a href="https://github.com/jmfinnegan12/nvidia-ceo-departure-model/commits/main/model/index.html">history</a></p>
+    <p class="muted">Nothing here is financial advice or a recommendation to trade.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap wide foot-inner">© 2026 Temerity Ventures LLC · <a href="mailto:info@eventneutral.com">Contact</a></div>
+</footer>
+
+<script src="https://eventneutral.com/kit/v1/vendor/d3.v7.min.js"></script>
+<script src="https://eventneutral.com/kit/v1/kit.js?v=2"></script>
+<script src="model.js?v=1"></script>
+<script src="page.js?v=1"></script>
+</body>
+</html>
