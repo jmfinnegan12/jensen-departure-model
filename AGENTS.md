@@ -12,6 +12,9 @@
 - In a model rationale, give the general idea first and the specifics after.
 - Apply a correction everywhere it applies, not only where it was pointed out.
 - When Jim gives his reasoning in a session, record it verbatim before summarizing it.
+- Jim's rationale for a model's default values goes in its own section. Text beside a control only says what the control is.
+- A chart must be readable without an explanation.
+- Each event site has a rules page for its market.
 - Structure and choice of visuals are open. They follow the question.
 - Before showing the page: open it in a browser, compare it with the references and earlier finished pages, and fix what falls short.
 

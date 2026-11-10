@@ -1,4 +1,4 @@
-# Nvidia CEO departure model
+# Jensen Departure Model
 
 A model from [Event Neutral](https://eventneutral.com): will Jensen Huang leave as Nvidia's chief executive? Built around Kalshi's `KXCEONVDA` markets.
 
