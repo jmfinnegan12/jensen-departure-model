@@ -6,8 +6,8 @@
     "P_LIGHT":        {"central": 0.60,  "low_case": 0.55, "high_case": 0.70, "note": "something improper beyond the affair happened and comes to light"},
     "P_OUT_IF_LIGHT": {"central": 0.90,  "low_case": 0.85, "high_case": 0.95, "note": "he leaves, given something improper comes to light; cut from 95% on 2026-11-09; low and high are placeholders"},
     "P_OUT_IF_NOT":   {"central": 0.075, "low_case": 0.05, "high_case": 0.10, "note": "he leaves over this anyway, given nothing more comes to light"},
-    "MEDIAN_DAYS":    {"central": 85,    "low_case": 120,  "high_case": 45,   "note": "median days from as_of to the decisive finding or report; low and high cases are placeholders"},
-    "LAG_DAYS":       {"central": 14,    "low_case": 30,   "high_case": 7,    "note": "days from then until he has actually left; all three are placeholders"},
+    "MEDIAN_DAYS":    {"central": 90,    "low_case": 120,  "high_case": 55,   "note": "median days from as_of to the decisive finding or report; raised from 85, and the fast case from 45, on 2026-11-10; the slow case is a placeholder"},
+    "LAG_DAYS":       {"central": 14,    "low_case": 25,   "high_case": 7,    "note": "days from then until he has actually left; slow case cut from 30 to 25 on 2026-11-10"},
     "ORDINARY":       {"central": 0.025, "low_case": 0.02, "high_case": 0.03, "note": "chance per year he leaves for any reason unrelated to the scandal"}
   }
 }
