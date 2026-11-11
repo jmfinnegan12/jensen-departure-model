@@ -4,10 +4,10 @@
   "market_dates": ["2026-11-12", "2026-11-13", "2026-11-14", "2026-11-15", "2026-11-16", "2026-11-17", "2026-11-18", "2026-11-19", "2026-11-20", "2026-12-01", "2027-01-01", "2027-07-01", "2028-01-01", "2029-01-01", "2031-01-01", "2033-01-01"],
   "inputs": {
     "P_LIGHT":        {"central": 0.98,  "low_case": 0.98, "high_case": 0.99, "note": "something improper beyond the affair happened and comes to light; raised to 98% (98-99%) on 2026-11-11 after the NYT reported a second relationship, with a direct report, and the WSJ reported the board is preparing to oust him"},
-    "P_OUT_IF_LIGHT": {"central": 0.95,  "low_case": 0.92, "high_case": 0.99, "note": "he leaves, given something improper comes to light; raised from 90% (85-95%) to 95% (92-99%) on 2026-11-11"},
+    "P_OUT_IF_LIGHT": {"central": 0.97,  "low_case": 0.95, "high_case": 0.99, "note": "he leaves, given something improper comes to light; raised from 90% (85-95%) to 95% (92-99%), then to 97% (95-99%) on 2026-11-11"},
     "P_OUT_IF_NOT":   {"central": 0.06,  "low_case": 0.04, "high_case": 0.08, "note": "he leaves over this anyway, given nothing more comes to light; cut from 7.5% (5-10%) on 2026-11-11"},
-    "MEDIAN_DAYS":    {"central": 10,    "low_case": 30,   "high_case": 1,    "note": "median days from as_of (now 2026-11-11) to the decisive finding or report; was 90 (120 slow, 55 fast) counted from 2026-11-09; changed on 2026-11-11 after the second-relationship and ouster reports"},
-    "LAG_DAYS":       {"central": 0,     "low_case": 7,    "high_case": 0,    "note": "days from then until he has actually left; was 14 (25 slow, 7 fast); cut on 2026-11-11, since in past cases the CEO left the day the exit was announced"},
+    "MEDIAN_DAYS":    {"central": 7,     "low_case": 21,   "high_case": 1,    "note": "median days from as_of (2026-11-11) until he has actually left; on 2026-11-11 the finding and the departure were merged into this one input (was 90 days to the finding, 120 slow, 55 fast, counted from 2026-11-09)"},
+    "LAG_DAYS":       {"central": 0,     "low_case": 0,    "high_case": 0,    "note": "retired on 2026-11-11 (merged into MEDIAN_DAYS); kept at 0 so the code still reads it; was 14 (25 slow, 7 fast)"},
     "ORDINARY":       {"central": 0.02,  "low_case": 0.015, "high_case": 0.025, "note": "chance per year he leaves for any reason unrelated to the scandal; cut from 2.5% (2-3%) on 2026-11-11"}
   }
 }

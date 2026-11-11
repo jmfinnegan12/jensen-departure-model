@@ -20,13 +20,11 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
   // is not enough; the reasoning behind each default is in "Why these numbers" on the page.
   const INPUTS = [
     { key: 'P_LIGHT', group: 'light', label: 'Chance that something improper happened and comes to light', pct: true, step: 1,
-      note: 'A conflict of interest, a preference given to the customer, information passed, or that he knew. Found and made public, not only true.' },
+      note: 'Beyond the admitted affair: a conflict of interest, a preference given to the customer, information passed, that he knew, or misconduct such as a relationship with a direct report. Found and made public, not only true.' },
     { key: 'P_OUT_IF_LIGHT', group: 'light', label: 'Chance he leaves, if something improper comes to light', pct: true, step: 1 },
     { key: 'P_OUT_IF_NOT', group: 'light', label: 'Chance he leaves over the scandal, if nothing more comes to light', pct: true, step: 0.5, sliderMax: 40 },
-    { key: 'MEDIAN_DAYS', group: 'time', label: 'Median days until the decisive finding or report', unit: 'days', step: 1, min: 1, max: 1500, sliderMax: 120,
-      note: 'Counted from Nov 11, 2026. The finding or report that ends his tenure is as likely to come before this many days as after. It can come from the board\'s investigation, the press, Congress, a federal inquiry or the shareholder lawsuit.' },
-    { key: 'LAG_DAYS', group: 'time', label: 'Days from the decisive finding or report until he has actually left', unit: 'days', step: 1, max: 365, sliderMax: 90,
-      note: `The market counts only an actual departure. An announced future exit does not count.${fn('terms')}` },
+    { key: 'MEDIAN_DAYS', group: 'time', label: 'Median days until he has left, if he leaves over the scandal', unit: 'days', step: 1, min: 1, max: 1500, sliderMax: 120,
+      note: `Counted from Nov 11, 2026. He is as likely to have left before this many days as after. The market counts only an actual departure; an announced future exit does not count.${fn('terms')}` },
     { key: 'ORDINARY', group: 'ord', label: 'Chance per year he leaves for a reason unrelated to the scandal', pct: true, step: 0.5, sliderMax: 15 },
   ];
   const CASES = ['medium', 'low', 'high']; // index order in M.DEFAULTS
