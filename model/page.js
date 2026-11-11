@@ -23,8 +23,8 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
       note: 'A conflict of interest, a preference given to the customer, information passed, or that he knew. Found and made public, not only true.' },
     { key: 'P_OUT_IF_LIGHT', group: 'light', label: 'Chance he leaves, if something improper comes to light', pct: true, step: 1 },
     { key: 'P_OUT_IF_NOT', group: 'light', label: 'Chance he leaves over the scandal, if nothing more comes to light', pct: true, step: 0.5, sliderMax: 40 },
-    { key: 'MEDIAN_DAYS', group: 'time', label: 'Median days until the decisive finding or report', unit: 'days', step: 5, min: 5, max: 1500, sliderMax: 240,
-      note: 'Counted from Nov 9, 2026. The finding or report that ends his tenure is as likely to come before this many days as after. It can come from the board\'s investigation, the press, Congress, a federal inquiry or the shareholder lawsuit.' },
+    { key: 'MEDIAN_DAYS', group: 'time', label: 'Median days until the decisive finding or report', unit: 'days', step: 1, min: 1, max: 1500, sliderMax: 120,
+      note: 'Counted from Nov 11, 2026. The finding or report that ends his tenure is as likely to come before this many days as after. It can come from the board\'s investigation, the press, Congress, a federal inquiry or the shareholder lawsuit.' },
     { key: 'LAG_DAYS', group: 'time', label: 'Days from the decisive finding or report until he has actually left', unit: 'days', step: 1, max: 365, sliderMax: 90,
       note: `The market counts only an actual departure. An announced future exit does not count.${fn('terms')}` },
     { key: 'ORDINARY', group: 'ord', label: 'Chance per year he leaves for a reason unrelated to the scandal', pct: true, step: 0.5, sliderMax: 15 },
@@ -223,13 +223,18 @@ fetch('inputs.json', { cache: 'no-cache' }).then((r) => r.json()).then((cfg) => 
     const { width, height, m, wide } = G;
     const top = Math.max(...rows.map((r) => Math.max(r.high, r.total, r.low)), 0.01);
     x = d3.scaleUtc([M.TODAY, end], [m.l, width - m.r]);
-    y = d3.scaleLinear([0, top * 1.06], [height - m.b, m.t]).nice(5);
+    y = d3.scaleLinear([0, Math.min(1, top * 1.06)], [height - m.b, m.t]).nice(5);
     const plot = width - m.l - m.r;
     const months = (end - M.TODAY) / YEAR * 12;
 
     G.grid.call(d3.axisLeft(y).ticks(5).tickSize(-plot).tickFormat(''));
     G.yAxis.call(d3.axisLeft(y).ticks(5).tickSize(0).tickPadding(8).tickFormat((v) => Math.round(v * 100) + '%')).call((g) => g.select('.domain').remove());
-    if (months <= 30) {
+    if (months <= 2) {
+      // a few weeks: label days, as many as fit
+      const days = (end - M.TODAY) / 86400000;
+      const step = [1, 2, 3, 5, 7, 14].find((s) => days / s <= plot / 56) || 14;
+      G.xAxis.call(d3.axisBottom(x).ticks(d3.utcDay.every(step)).tickSize(5).tickPadding(6).tickFormat(d3.utcFormat('%b %-d')));
+    } else if (months <= 30) {
       // a short view: label months, as many as fit
       const step = [1, 2, 3, 6, 12].find((s) => months / s <= plot / 84) || 12;
       G.xAxis.call(d3.axisBottom(x).ticks(d3.utcMonth.every(step)).tickSize(5).tickPadding(6).tickFormat(d3.utcFormat('%b %Y')));
